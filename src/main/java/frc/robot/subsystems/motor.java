@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class motor extends SubsystemBase {
   /** Creates a new motor. */
   TalonFX motor = new TalonFX(0);
+  TalonFX motor1 = new TalonFX(1);
+  static double targetPos = 0;
   final static MotionMagicVoltage m_position = new MotionMagicVoltage(0);
   public motor() {
     TalonFXConfiguration configs = new TalonFXConfiguration();
@@ -30,7 +33,18 @@ public class motor extends SubsystemBase {
 
     motor.getConfigurator().apply(configs);
 
+    motor1.setControl(new Follower(0, false));
+
     
+  }
+
+  public void movePos(double pos) {
+    motor.setControl(m_position.withPosition(pos));
+  }
+
+
+  public double returnTargetPos() {
+    return targetPos;
   }
 
   @Override
